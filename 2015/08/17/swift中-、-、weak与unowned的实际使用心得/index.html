@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ios,swift," />
+
+
+
+
+
+  <link rel="alternate" href="http://ckp1992.github.io/" title="Cooper‘s Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="?、!、weak、unowned实际开发引用的一些理解与例子">
+<meta name="keywords" content="ios,swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="swift中?、!、weak与unowned的实际使用心得">
+<meta property="og:url" content="http://yoursite.com/2015/08/17/swift中-、-、weak与unowned的实际使用心得/index.html">
+<meta property="og:site_name" content="Cooper‘s Blog">
+<meta property="og:description" content="?、!、weak、unowned实际开发引用的一些理解与例子">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2015-08-16T17:18:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="swift中?、!、weak与unowned的实际使用心得">
+<meta name="twitter:description" content="?、!、weak、unowned实际开发引用的一些理解与例子">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/08/17/swift中-、-、weak与unowned的实际使用心得/"/>
+
+
+
+
+
+  <title>swift中?、!、weak与unowned的实际使用心得 | Cooper‘s Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?64c1deb957f14608b306ce2ad57c359c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cooper‘s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一名码畜</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/17/swift中-、-、weak与unowned的实际使用心得/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/author.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cooper‘s Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">swift中?、!、weak与unowned的实际使用心得</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-17T01:04:34+08:00">
+                2015-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ios/" itemprop="url" rel="index">
+                    <span itemprop="name">ios</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  ?、!、weak、unowned实际开发引用的一些理解与例子
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>相信很多人在一开始学swift的时候都像我一样对?,!,weak,unowned感到十分迷惑。<br>在这里大概讲述下这些东西在实际开发中的用处。</p>
+<p>说真的，这些东西看中文翻译很多时候真的是<code>然并卵</code>，最好看英文的官方文档，然后不懂的查单词，慢点没所谓的，实在看不懂，多打几次代码就会熟悉很多了，这个是个人体会。<br>这里是<a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/" target="_blank" rel="noopener">官方文档</a></p>
+<p>###swift变量的类型<br>swift变量可以理解为有3种:</p>
+<ul>
+<li><code>普通变量</code>，<code>可选变量(optional)</code>，<code>隐式解析可选变量(implicitly unwrapped optional)</code></li>
+<li>为了方便叙述，optional变量称为<code>?变量</code>，隐式解析可选变量称为<code>!变量</code></li>
+</ul>
+<p>####普通变量</p>
+<ul>
+<li>普通变量不能为nil，如果它是类，结构体中的属性，必须在init()函数中初始化。</li>
+</ul>
+<p>####optional变量(?变量) 与 implicitly unwrapped optional 变量(!变量)</p>
+<ul>
+<li>optional是这样定义的:</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Optional</span>&lt;<span class="title">T</span>&gt; : <span class="title">Reflectable</span>, <span class="title">NilLiteralConvertible</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="type">None</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">Some</span>(<span class="type">T</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Construct a `nil` instance.</span></span><br><span class="line">    <span class="keyword">init</span>()</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Construct a non-\ `nil` instance that stores `some`.</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="number">_</span> some: <span class="type">T</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// If `self == nil`, returns `nil`.  Otherwise, returns `f(self!)`.</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">map</span>&lt;U&gt;<span class="params">(f: @noescape <span class="params">(T)</span></span></span> -&gt; <span class="type">U</span>) -&gt; <span class="type">U</span>?</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Returns `f(self)!` iff `self` and `f(self)` are not nil.</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">flatMap</span>&lt;U&gt;<span class="params">(f: @noescape <span class="params">(T)</span></span></span> -&gt; <span class="type">U</span>?) -&gt; <span class="type">U</span>?</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Returns a mirror that reflects `self`.</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">getMirror</span><span class="params">()</span></span> -&gt; <span class="type">MirrorType</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Create an instance initialized with `nil`.</span></span><br><span class="line">    <span class="keyword">init</span>(nilLiteral: ())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关注点在这里：case,和some。</p>
+<blockquote>
+<p>optional变量(<code>?变量</code>)为nil的时候，返回的是<code>None</code></p>
+</blockquote>
+<blockquote>
+<p>optional变量(<code>?变量</code>)不为nil的时候，返回的是<code>Sonm(Type)</code>,即Type这个类型的普通变量</p>
+</blockquote>
+<p><code>?变量</code>使用的时候，可以接受nil值，也可以接受原本类型的值.</p>
+<ul>
+<li>implicitly unwrapped optional是这样定义的：</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">ImplicitlyUnwrappedOptional</span>&lt;<span class="title">T</span>&gt; : <span class="title">Reflectable</span>, <span class="title">NilLiteralConvertible</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="type">None</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">Some</span>(<span class="type">T</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Construct a `nil` instance.</span></span><br><span class="line">    <span class="keyword">init</span>()</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Construct a non-\ `nil` instance that stores `some`.</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="number">_</span> some: <span class="type">T</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Construct an instance from an explicitly unwrapped optional</span></span><br><span class="line">    <span class="comment">/// (`T?`).</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="number">_</span> v: <span class="type">T</span>?)</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Create an instance initialized with `nil`.</span></span><br><span class="line">    <span class="keyword">init</span>(nilLiteral: ())</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// If `self == nil`, returns `nil`.  Otherwise, returns `f(self!)`.</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">map</span>&lt;U&gt;<span class="params">(f: @noescape <span class="params">(T)</span></span></span> -&gt; <span class="type">U</span>) -&gt; <span class="type">U</span>!</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Returns `f(self)!` iff `self` and `f(self)` are not nil.</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">flatMap</span>&lt;U&gt;<span class="params">(f: @noescape <span class="params">(T)</span></span></span> -&gt; <span class="type">U</span>!) -&gt; <span class="type">U</span>!</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Returns a mirror that reflects `self`.</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">getMirror</span><span class="params">()</span></span> -&gt; <span class="type">MirrorType</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>与optional类似，不过使用的时候它是自动在变量后面添加上一个!，默认对这个变进行unwrap，这种操作称为force unwrap。</p>
+<blockquote>
+<p>implicitly unwrapped optional变量(<code>!变量</code>)为nil，返回None,并且编译器会报错。</p>
+</blockquote>
+<blockquote>
+<p>implicitly unwrapped optional变量(<code>!变量</code>)不为nil，返回Some(Type),即Type类型的普通变量</p>
+</blockquote>
+<p>这种变量使用起来比较方便，不用在变量后面添加?就可以对变量和函数进行调用，但是比较危险，一旦接受了nil值就会报错导致程序的崩溃。</p>
+<ul>
+<li>2个例子</li>
+</ul>
+<p>最普通的Model定义：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a: <span class="type">String</span>    <span class="comment">//普通变量不能为nil</span></span><br><span class="line">    <span class="keyword">var</span> b: <span class="type">String</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> <span class="built_in">c</span>: <span class="type">String</span>?	<span class="comment">//?变量不必初始化</span></span><br><span class="line">    <span class="keyword">var</span> d: <span class="type">String</span>!	<span class="comment">//!变量不用初始化</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(a: <span class="type">String</span> , b: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.a = a	<span class="comment">//普通变量必须初始化</span></span><br><span class="line">        <span class="keyword">self</span>.b = b</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实在开发的时候，在ViewController中写变量，多把变量定义为!或者?类型</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">XXViewController</span> : <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> a: <span class="type">UILabel</span>!			<span class="comment">//!类型告诉编译器这个变量不会为空，不用在init()中初始化</span></span><br><span class="line">    <span class="keyword">var</span> b: <span class="type">UILabel</span>?			<span class="comment">//?类型告诉编译器这个变量可能会为空，不用在init()中初始化</span></span><br><span class="line"><span class="comment">//    var c: UILabel		//VC中不是每次都重写init(),直接定义为普通变量会强制要求初始化</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        </span><br><span class="line">        a = <span class="type">UILabel</span>()		</span><br><span class="line">        b = <span class="type">UILabel</span>()</span><br><span class="line">        </span><br><span class="line">        b?.text = <span class="string">"b"</span>  <span class="comment">//b = nil时，?后面的语句不执行</span></span><br><span class="line">        b!.text = <span class="string">"b"</span>  <span class="comment">//!会强制解释(force unwrap)出b?变量中的Some(Type)类型，即普通的UILable类型，b = nil的时候，程序崩溃，因为b!是普通类型，而b!不能为nil</span></span><br><span class="line">        a.text = <span class="string">"a"</span>   <span class="comment">//a = nil时，程序会在这里崩溃，因为a是!类型，会将a强制解释为普通类型，而普通类型不能为nil</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>开发中值得注意的一点是optional chaining中optional的传递</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> modelO: <span class="type">Model</span>? = <span class="type">Model</span>(a: <span class="string">""</span>, b: <span class="string">""</span>) <span class="comment">//定义一个?变量</span></span><br><span class="line"><span class="keyword">var</span> model: <span class="type">Model</span>! = <span class="type">Model</span>(a: <span class="string">""</span>, b: <span class="string">""</span>)  <span class="comment">//定义一个!变量</span></span><br><span class="line"></span><br><span class="line">modelO?.a = <span class="string">"1"</span></span><br><span class="line">model.a = <span class="string">"2"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">println</span>(modelO?.a)	<span class="comment">//打印 "Optional("1")"</span></span><br><span class="line"><span class="built_in">println</span>(modelO!.a)	<span class="comment">//打印 "1"</span></span><br></pre></td></tr></table></figure>
+<p>Model类中a属性是一个普通变量,modelO是一个是一个?变量，使用optional chaining时，<code>modelO?.a</code>会是一个?变量，<code>modelO</code>的optional性质会传递到他的属性<code>a</code>中, 而<code>modelO!.a</code>则是解释成普通变量</p>
+<h3 id="weak、unowned与循环引用"><a href="#weak、unowned与循环引用" class="headerlink" title="weak、unowned与循环引用"></a>weak、unowned与循环引用</h3><ul>
+<li>weak对应optional，unowned 对应 implicitly unwrapped optional</li>
+<li>weak,unowned定义的变量都是弱引用类型，用于打破循环引用</li>
+</ul>
+<p>实际开发中循环引用一般容易出现在这2种情况:</p>
+<pre><code>1.block（swift里面称为闭包:closure） 
+2.定义protocol的时候没有用weak来定义
+</code></pre><ul>
+<li>用 unowned 来打破 block 造成的循环引用例子：</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendHttpRequestWithResponseJSON</span><span class="params">(block:<span class="params">( <span class="params">(json:String)</span></span></span></span>-&gt;<span class="type">Void</span>)? = <span class="literal">nil</span> )&#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> blockUW = block &#123;</span><br><span class="line">        blockUW(json: <span class="string">"网络数据返回的是：呵呵哒"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BViewController</span>:<span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> resData: <span class="type">String</span>!</span><br><span class="line">    <span class="keyword">var</span> responseBlock: ((json:<span class="type">String</span>)-&gt;<span class="type">Void</span> )! <span class="comment">//默认强指针</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">        responseBlock = &#123;(json) -&gt; <span class="type">Void</span> <span class="keyword">in</span>  <span class="comment">//错误写法，应该把self弄成弱类型，应在(json前面)加上[unowned self]</span></span><br><span class="line">            <span class="keyword">self</span>.resData = json</span><br><span class="line">            <span class="built_in">println</span>(<span class="keyword">self</span>.resData)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//要进行网络请求了</span></span><br><span class="line">        sendHttpRequestWithResponseJSON(block: responseBlock)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">deinit</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"BVC deinit"</span>)	<span class="comment">//循环引用的时候，pop出去并不能打印这句</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面例子中，在<code>BViewController</code>中定义了<code>responseBlock</code>，即<code>BViewController</code>实例会用一个强指针指向了<code>responseBlock</code>，而<code>responseBlock</code>具体实现的时候引用了self，即内部有一个强指针指向了<code>BViewController</code>的实例，这样就造成了循环引用</p>
+<p>当一个<code>BViewController</code>实例在navigation中Push进来，它就肯定不会为nil，除非被pop出去了。<br>所以<code>BViewController</code>实例的self肯定不为nil，可以使用 unowned 来打破循环引用，上面的Block应该如下实现：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">responseBlock = &#123;[<span class="keyword">unowned</span> <span class="keyword">self</span>](json) -&gt; <span class="type">Void</span> <span class="keyword">in</span>  </span><br><span class="line">        <span class="keyword">self</span>.resData = json</span><br><span class="line">        <span class="built_in">println</span>(<span class="keyword">self</span>.resData)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然也可以用 weak 来打破循环引用，但是self就成为了?类型了</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">responseBlock = &#123;[<span class="keyword">weak</span> <span class="keyword">self</span>](json) -&gt; <span class="type">Void</span> <span class="keyword">in</span>  </span><br><span class="line">        <span class="keyword">self</span>?.resData = json	<span class="comment">//也可以self!.resData = json</span></span><br><span class="line">        <span class="built_in">println</span>(<span class="keyword">self</span>?.resData)	<span class="comment">//同理println(self!.resData)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用weak来打破 delegate 中的循环引用例子：</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义一个Protocol</span></span><br><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">GGTableViewDelegate</span>: <span class="title">class</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">didSelectRowAtIndexPath</span><span class="params">(indexpath:NSIndexPath)</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//自己定义一个tableView</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GGTableView</span>: <span class="title">UIView</span></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> delegate: <span class="type">GGTableViewDelegate</span>?  <span class="comment">//错误写法，这里要加weak</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在某一个viewController中使用这个tableView</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GGUiViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> tableView: <span class="type">GGTableView</span>!</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//1.初始化</span></span><br><span class="line">        tableView = <span class="type">GGTableView</span>()</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//2.设置代理</span></span><br><span class="line">        tableView.delegate = <span class="keyword">self</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">deinit</span> &#123;</span><br><span class="line">        <span class="built_in">println</span>(<span class="string">"ggVC deinit"</span>) <span class="comment">//循环引用的时候，pop出去并不能打印这句</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>和block的例子原理相似，造成循环引用的原因是<code>GGUiViewController</code>与<code>GGTableView</code>内部变量中相互持有对方，并且都是强引用。</p>
+<p>只要这样就可以打破循环引用：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GGTableView</span>: <span class="title">UIView</span></span>&#123;</span><br><span class="line">    <span class="keyword">weak</span> <span class="keyword">var</span> delegate: <span class="type">GGTableViewDelegate</span>?  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>在ViewController中多用?和!变量</li>
+<li>打循环引用的时候：<code>weak</code>对应<code>?变量</code>，<code>unowned</code>对应<code>!变量</code></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ios/" rel="tag"># ios</a>
+          
+            <a href="/tags/swift/" rel="tag"># swift</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/21/Swift项目中使用条件编译与建立多个Scheme方开发使用/" rel="next" title="Swift项目中使用条件编译与建立多个Scheme方便开发使用">
+                <i class="fa fa-chevron-left"></i> Swift项目中使用条件编译与建立多个Scheme方便开发使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/23/苹果证书实际应用的一些理解/" rel="prev" title="苹果证书实际应用的一些理解">
+                苹果证书实际应用的一些理解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/author.jpg"
+                alt="Cooper" />
+            
+              <p class="site-author-name" itemprop="name">Cooper</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ckp1992.github.io/" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ckp1992" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kivixv.com/" title="kivi’s Blog" target="_blank">kivi’s Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://boolron.github.io/" title="Ron’s Blog" target="_blank">Ron’s Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#weak、unowned与循环引用"><span class="nav-number">1.</span> <span class="nav-text">weak、unowned与循环引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cooper</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

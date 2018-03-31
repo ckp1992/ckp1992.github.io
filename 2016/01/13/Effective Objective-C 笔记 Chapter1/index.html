@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Effective Objective-C," />
+
+
+
+
+
+  <link rel="alternate" href="http://ckp1992.github.io/" title="Cooper‘s Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Effective Objective-C第一章笔记">
+<meta name="keywords" content="Effective Objective-C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-ObjectiveC 笔记 Chapter1">
+<meta property="og:url" content="http://yoursite.com/2016/01/13/Effective Objective-C 笔记 Chapter1/index.html">
+<meta property="og:site_name" content="Cooper‘s Blog">
+<meta property="og:description" content="Effective Objective-C第一章笔记">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2016-01-15T07:21:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Effective-ObjectiveC 笔记 Chapter1">
+<meta name="twitter:description" content="Effective Objective-C第一章笔记">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/01/13/Effective Objective-C 笔记 Chapter1/"/>
+
+
+
+
+
+  <title>Effective-ObjectiveC 笔记 Chapter1 | Cooper‘s Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?64c1deb957f14608b306ce2ad57c359c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cooper‘s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一名码畜</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/01/13/Effective Objective-C 笔记 Chapter1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/author.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cooper‘s Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Effective-ObjectiveC 笔记 Chapter1</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-13T23:51:05+08:00">
+                2016-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Objective-C/" itemprop="url" rel="index">
+                    <span itemprop="name">Objective-C</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  Effective Objective-C第一章笔记
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>####<strong>Chapter 1</strong></p>
+<p>###Item 1 先好好了解一下一下Objc或者C的语法</p>
+<ul>
+<li>了解指针类型与值类型。</li>
+<li>了解C语言的核心知识，对了解内存模型和指针有帮助</li>
+</ul>
+<p>###Item 2 在类的头文件中尽量少引入其他头文件</p>
+<ul>
+<li>在.h文件中尽量少取import其他.h文件</li>
+<li>尽量用@class 在.h文件声明一下需要用到的类</li>
+<li>如果需要继承一个父类，需要在子类.h文件中import父类的.h文件</li>
+<li>如果一个.h文件中只有很简单的protocol,可以把这个.h文件包含进来</li>
+<li>尽可能晚地将其他.h文件import进来,即尽量在.m文件中引用其他.h文件</li>
+<li>协议尽量放在.m文件里面的<code>class-continuation category</code>里面声明要实现它</li>
+</ul>
+<p>建议这样做：</p>
+<p>EOCEmployer.h </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@class EOCEmployer;//建议使用@class</span><br><span class="line"></span><br><span class="line">@interface EOCPerson : NSObject</span><br><span class="line">@property (nonatomic, strong) EOCEmployer *employer;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>EOCEmployer.m</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;EOCPerson.h&quot;</span><br><span class="line">#import &quot;EOCCP1Delegate.h&quot;//建议在这里import</span><br><span class="line"></span><br><span class="line">@interface EOCPerson()&lt;EOCCP1Delegate&gt; //建议这里声明需要实现它</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation EOCPerson</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>EOCPerson.h</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@class EOCPerson;</span><br><span class="line"></span><br><span class="line">@interface EOCEmployer : NSObject</span><br><span class="line">- (void) addEmployer:(EOCPerson*)person;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>EOCStudent.h，这个类继承了EOCPerson</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import &quot;EOCPerson.h&quot;//父类在这里需要import.h文件</span><br><span class="line"></span><br><span class="line">@interface EOCStudent : EOCPerson</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">//非要在某个类的.h文件声明实现这个protocol,建议像这样单个.h文件里面写单个Protocol</span><br><span class="line">@protocol EOCCP1Delegate &lt;NSObject&gt;</span><br><span class="line"></span><br><span class="line">@optional</span><br><span class="line">- (void) eoc_cp1Function;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>###Item 3 多用字面量语法，少用与字面量等价的构造方法或者类方法</p>
+<ul>
+<li>建议使用字面量语法(Literal Syntax) 来创建NSString,NSNumber,NSArray,NSDictionray对象</li>
+<li>使用下标来访问NSArray的index或者NSDictionary的Key</li>
+<li>在字面量语法中如果有nil值，会抛出异常，使用字面量语法要保证插入的值不为nil</li>
+<li>限制性:只能插入Foundation框架中的对象，自定义的对象只能用非字面量语法插入</li>
+</ul>
+<p>推荐用法</p>
+<p>NSString :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//NSString字面量语法</span><br><span class="line">NSString *string = @&quot;string&quot;;</span><br></pre></td></tr></table></figure>
+<p>NSNumber:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NSNumber *integerNumber = @1;</span><br><span class="line">NSNumber *floatNumber = @1.2f;</span><br><span class="line">NSNumber *doubleNumber = @1.2;</span><br><span class="line">NSNumber *boolNumber = @YES;</span><br><span class="line">NSNumber *charNumber = @&apos;a&apos;;</span><br><span class="line">NSNumber *plusNumber = @(1.1f + 1);</span><br></pre></td></tr></table></figure>
+<p>NSArray与NSMutableArray:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//注意，并不能@[@&quot;a1&quot;,nil];这样使用，会崩。使用字面量语法容易崩溃，但更容易定位bug</span><br><span class="line">//像@&quot;a1&quot;这种变量，只能使用Foundation框架里面的类型，要使用custom的类对象，只能使用非字面量方法</span><br><span class="line"></span><br><span class="line">NSArray *array = @[@&quot;a1&quot;,@&quot;a2&quot;,@&quot;a3&quot;];</span><br><span class="line">NSString *a3 = array[1];</span><br><span class="line">    </span><br><span class="line">NSMutableArray *mulArray = [@[@&quot;a1&quot;,@&quot;a2&quot;,@&quot;a3&quot;] mutableCopy];</span><br><span class="line">mulArray[0] = @&quot;a0&quot;;</span><br></pre></td></tr></table></figure>
+<p>NSDictionary与NSMutableDictionary:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSDictionary *dic = @&#123;@&quot;k1&quot; : @&quot;1&quot; , @&quot;k2&quot; : @2&#125;;</span><br><span class="line">NSString *k1 = dic[@&quot;k1&quot;];</span><br><span class="line">    </span><br><span class="line">NSMutableDictionary *mulDic = [@&#123;@&quot;k1&quot; : @&quot;1&quot; , @&quot;k2&quot; : @2&#125; mutableCopy];</span><br><span class="line">mulDic[@&quot;k1&quot;] = @&quot;0&quot;;</span><br></pre></td></tr></table></figure>
+<p>###Item4 多用有具体类型的常量，少用#define来定义常量</p>
+<ul>
+<li>避免去使用#define定义常量，它们不具备具体类型，只是做了单纯替代。而且它们容易在没有任何警告的情况下被重复定义，从而产生不稳定的值。</li>
+<li>定义<code>translation-unit-specific</code>(可以理解为定义只在某个.m里面供内部使用的)的常量,要加上<code>static</code> <code>const</code>关键字，这样常量就不会定义在<code>global symbol table</code>，避免了不同.m文件中定义同样名字的常量造成冲突报错的问题。所以不需对它命名添加前缀。</li>
+<li>如果要定义一个供外部使用的常量，在.h文件中使用extern关键字来定义。在.m文件中具体再指定具体值。.h文件使用extern来修饰的常量，会在<code>global symbol table</code>定义，所以要加入前缀来避免冲突。</li>
+</ul>
+<p><strong>假设要定义一个专门放NSNotification名字的文件</strong></p>
+<p><strong>定义仅供内部使用的常量</strong></p>
+<p>EOCItem4.h:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@interface EOCItem4 : NSObject</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>EOCItem4.m:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;EOCItem4.h&quot;</span><br><span class="line">#import &quot;EOCItem4Notifications.h&quot;</span><br><span class="line"></span><br><span class="line">//定义仅供内部使用的常量，使用static 与 const常量来保证不声明在global symbol table，避免了冲突</span><br><span class="line">static NSString *const constString = @&quot;string&quot;;</span><br><span class="line">static const CGFloat constFloat = 1.0f;</span><br><span class="line"></span><br><span class="line">@implementation EOCItem4</span><br><span class="line"></span><br><span class="line">- (void) item3Func &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,constString);</span><br><span class="line">    NSLog(@&quot;%f&quot;,constFloat);</span><br><span class="line">    NSLog(@&quot;%@&quot;,EOCItem4Notifications1);//在其他文件定义的对外使用的常量</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p><strong>定义对外使用的常量</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//在EOCItem4Notifications.h中</span><br><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line"></span><br><span class="line">extern NSString *const EOCItem4Notifications1;</span><br><span class="line">extern NSString *const EOCItem4Notifications2;	</span><br><span class="line"></span><br><span class="line">///在EOCItem4Notifications.m 中</span><br><span class="line">#import &quot;EOCItem4Notifications.h&quot;</span><br><span class="line"></span><br><span class="line">NSString *const EOCItem4Notifications1 = @&quot;EOCItem4Notifications1&quot;;</span><br><span class="line">NSString *const EOCItem4Notifications2 = @&quot;EOCItem4Notifications2&quot;;</span><br></pre></td></tr></table></figure>
+<p>###Item5 使用枚举去定义一些状态和选项</p>
+<ul>
+<li>使用enum去定义一些状态和选项，使他们可读性更强</li>
+<li>若使用enum去定义去定义一些可以一并使用选项型的常量，把它们的值定义为2的幂值，这样它们就可以用 <code>|</code>运算符来一起使用了</li>
+<li>用<code>NS_ENUM</code>或者<code>NS_OPTIONS</code>来定义枚举，并且显示给出它的类型</li>
+<li>当使用switch来判断一个枚举值的时候，建议不要写default,这样当增加一个新枚举时候编译器就会报警告。有时候并不需要去判断这个新增的枚举值，如果有default新增的枚举值就会走default这里，没有警告可能会使我们错误地通过default处理这个状态得会造成一些Bug。</li>
+</ul>
+<p><strong>定义了2个枚举，一个用作表示状态，一个用于选项型：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSUInteger,EOCItem5State) &#123;</span><br><span class="line">    EOCItem5StateNone = 0 ,</span><br><span class="line">    EOCItem5State1 ,</span><br><span class="line">    EOCItem5State2 = 75,</span><br><span class="line">    EOCItem5State3 , //后来才新增的状态</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef NS_OPTIONS(NSUInteger, EOCItem5Option) &#123;</span><br><span class="line">    EOCItem5OptionA = 1 &lt;&lt; 0,</span><br><span class="line">    EOCItem5OptionB = 1 &lt;&lt; 1,</span><br><span class="line">    EOCItem5OptionC = 1 &lt;&lt; 2,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>状态型枚举使用：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">EOCItem5State state = EOCItem5StateNone;</span><br><span class="line">    </span><br><span class="line">//switch产生了 Enumeration value &apos;EOCItem5State&apos; not handled in switch 警告</span><br><span class="line">switch (state) &#123;//让这里产生警告，假设只需要处理这3个，新增的状态3就不处理了，如果错误通过default去处理，就会产生Bug</span><br><span class="line">    case EOCItem5StateNone:</span><br><span class="line">        break;</span><br><span class="line">    case EOCItem5State1:</span><br><span class="line">        break;</span><br><span class="line">    case EOCItem5State2:</span><br><span class="line">        break;</span><br><span class="line">//        default:</span><br><span class="line">        //处理default。。。</span><br><span class="line">//            break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>选项型枚举使用：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">EOCItem5Option option = EOCItem5OptionA | EOCItem5OptionB | EOCItem5OptionC;</span><br><span class="line">    </span><br><span class="line">if (option &amp; EOCItem5OptionA ) &#123;</span><br><span class="line">    //option中有选EOCItem5OptionA</span><br><span class="line">&#125;</span><br><span class="line">if (option &amp; EOCItem5OptionB) &#123;</span><br><span class="line">    //option中有选EOCItem5OptionB</span><br><span class="line">&#125;</span><br><span class="line">if (option &amp; EOCItem5OptionC) &#123;</span><br><span class="line">    //option中有选EOCItem5OptionC</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Effective-Objective-C/" rel="tag"># Effective Objective-C</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/23/苹果证书实际应用的一些理解/" rel="next" title="苹果证书实际应用的一些理解">
+                <i class="fa fa-chevron-left"></i> 苹果证书实际应用的一些理解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/03/CoreAnimation实现简单直播点赞飘心效果/" rel="prev" title="CoreAnimation实现简单直播点赞飘心效果">
+                CoreAnimation实现简单直播点赞飘心效果 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/author.jpg"
+                alt="Cooper" />
+            
+              <p class="site-author-name" itemprop="name">Cooper</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ckp1992.github.io/" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ckp1992" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kivixv.com/" title="kivi’s Blog" target="_blank">kivi’s Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://boolron.github.io/" title="Ron’s Blog" target="_blank">Ron’s Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cooper</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

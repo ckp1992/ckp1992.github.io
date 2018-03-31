@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ios,swift," />
+
+
+
+
+
+  <link rel="alternate" href="http://ckp1992.github.io/" title="Cooper‘s Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="swift条件编译在开发中的使用">
+<meta name="keywords" content="ios,swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift项目中使用条件编译与建立多个Scheme方便开发使用">
+<meta property="og:url" content="http://yoursite.com/2015/07/21/Swift项目中使用条件编译与建立多个Scheme方开发使用/index.html">
+<meta property="og:site_name" content="Cooper‘s Blog">
+<meta property="og:description" content="swift条件编译在开发中的使用">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xii9w.com1.z0.glb.clouddn.com/ckp_AF76C4A0-0DD6-431B-9FFE-E3EB14F6A728.png">
+<meta property="og:image" content="http://7xii9w.com1.z0.glb.clouddn.com/ckp_7AF63215-1867-48B9-9E9E-8CF29E91A568.png">
+<meta property="og:image" content="http://7xii9w.com1.z0.glb.clouddn.com/ckp_3733A1D0-CABA-4230-9FEF-8C4A86311FCB.png">
+<meta property="og:image" content="http://7xii9w.com1.z0.glb.clouddn.com/ckp_D1328045-DAE8-4040-BD32-214331B416C0.png">
+<meta property="og:image" content="http://7xii9w.com1.z0.glb.clouddn.com/ckp_54086F44-7E6D-4528-87A5-BB0BAFEB77B7.png">
+<meta property="og:updated_time" content="2015-08-08T02:15:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift项目中使用条件编译与建立多个Scheme方便开发使用">
+<meta name="twitter:description" content="swift条件编译在开发中的使用">
+<meta name="twitter:image" content="http://7xii9w.com1.z0.glb.clouddn.com/ckp_AF76C4A0-0DD6-431B-9FFE-E3EB14F6A728.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/07/21/Swift项目中使用条件编译与建立多个Scheme方开发使用/"/>
+
+
+
+
+
+  <title>Swift项目中使用条件编译与建立多个Scheme方便开发使用 | Cooper‘s Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?64c1deb957f14608b306ce2ad57c359c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cooper‘s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一名码畜</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/21/Swift项目中使用条件编译与建立多个Scheme方开发使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/author.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cooper‘s Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Swift项目中使用条件编译与建立多个Scheme方便开发使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-21T23:04:26+08:00">
+                2015-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ios/" itemprop="url" rel="index">
+                    <span itemprop="name">ios</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  swift条件编译在开发中的使用
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>###在Objective-C项目中，经常会这样使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ifndef DEBUG</span><br><span class="line">	#define ABC abc</span><br><span class="line">#else</span><br><span class="line">	#define XYZ xyz</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></p>
+<p>这样在Debug模式下就会定义第一个宏，非Debug模式下就定义第二个宏</p>
+<p>###在Swift项目中条件编译的方法</p>
+<ul>
+<li><strong>PROJECT这样设置</strong></li>
+</ul>
+<p><img src="http://7xii9w.com1.z0.glb.clouddn.com/ckp_AF76C4A0-0DD6-431B-9FFE-E3EB14F6A728.png" alt="PROJECT中的设置"></p>
+<blockquote>
+<p>把红框中的Configuration的名字改成你需要的名字就行了，主要是用作区分</p>
+</blockquote>
+<ul>
+<li><strong>TARGET这样设置</strong><br><img src="http://7xii9w.com1.z0.glb.clouddn.com/ckp_7AF63215-1867-48B9-9E9E-8CF29E91A568.png" alt="TARGET中的设置"></li>
+</ul>
+<blockquote>
+<p>PROJECT中设置的新Configuration名字在这边就会对应显示了</p>
+</blockquote>
+<p>1.在Debug模式下，需要定义Debug这个宏，双击红框区域然后输入 -DDebug，选择编译模式为Debug时，系统就会提供这个宏</p>
+<p>2.同样，在新建的Configuration上面输入 -D+宏名。我选择建立了一个Staging的宏</p>
+<h3 id="建立新Scheme"><a href="#建立新Scheme" class="headerlink" title="建立新Scheme"></a>建立新Scheme</h3><ul>
+<li><strong>菜单中选择 <code>Product -&gt; Scheme -&gt; EditScheme</code></strong></li>
+<li><p><strong>当前默认为名称为与工程名称的Scheme，点击<code>Duplicate Scheme</code>,将当前Scheme复制2次得到2个新Scheme</strong></p>
+</li>
+<li><p><strong>在<code>Manage Scheme</code>中把3个Scheme名称改成你想要的，例如可以改成这样</strong><br><img src="http://7xii9w.com1.z0.glb.clouddn.com/ckp_3733A1D0-CABA-4230-9FEF-8C4A86311FCB.png" alt="Scheme改名示例"></p>
+</li>
+<li><p><strong>在<code>EditScheme</code>中如下设置<code>Build Configuration</code>选项</strong></p>
+</li>
+<li><img src="http://7xii9w.com1.z0.glb.clouddn.com/ckp_D1328045-DAE8-4040-BD32-214331B416C0.png" alt="设置Scheme"><blockquote>
+<p>点开左边箭头的选项，每一个选项顺序选择相应顺序的<code>Build Configuration</code></p>
+</blockquote>
+</li>
+</ul>
+<p>这样就完成了设置，我选择<code>MVVM -Debug</code>这个Scheme，编译时系统会定义<code>Debug</code>这个宏</p>
+<p>同样我选择<code>MVVM -Debug -Staging</code>的时候，就有<code>Debug</code>和<code>Staging</code>这2个宏了</p>
+<ul>
+<li>Build的时候在这里选择不同的Scheme</li>
+</ul>
+<p><img src="http://7xii9w.com1.z0.glb.clouddn.com/ckp_54086F44-7E6D-4528-87A5-BB0BAFEB77B7.png" alt="选择不同的Scheme"></p>
+<h3 id="条件编译的代码"><a href="#条件编译的代码" class="headerlink" title="条件编译的代码"></a>条件编译的代码</h3><blockquote>
+<p>设置Debug宏，为了只在Debug模式下才打印输出log</p>
+</blockquote>
+<blockquote>
+<p>设置Staging，为了在Debug模式下区分服务器正式服和测试服地址</p>
+</blockquote>
+<ul>
+<li><strong>在Log中设置</strong></li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DLog</span><span class="params">(logMessage: Any, file: String = <span class="keyword">__FILE__</span>, function: String = <span class="keyword">__FUNCTION__</span>, line: Int = <span class="keyword">__LINE__</span>)</span></span> &#123;</span><br><span class="line">#<span class="keyword">if</span> <span class="type">Debug</span></span><br><span class="line">    <span class="built_in">println</span>(<span class="string">"\(file.lastPathComponent):\(function):\(line) &gt;&gt;&gt; \(logMessage)"</span>);</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>在服务器地址定义中设置</strong></li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#<span class="keyword">if</span> <span class="type">Staging</span> </span><br><span class="line">    <span class="keyword">let</span> <span class="type">API_HOST</span> = <span class="comment">//测试服</span></span><br><span class="line">#<span class="keyword">else</span>       </span><br><span class="line">    <span class="keyword">let</span> <span class="type">API_HOST</span> = <span class="comment">//正式服</span></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>按以上顺序选择不同Scheme来Build，会得到以下效果：</p>
+<p>1.Debug模式下使用测试服务器</p>
+<p>2.Debug模式下使用正式服务器</p>
+<p>3.Release模式，不输出Log信息，使用正式服务器</p>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p>参考了<a href="http://dev.iachieved.it/iachievedit/logging-and-build-configurations-with-swift/" target="_blank" rel="noopener">这篇</a>，还有<a href="http://dev.iachieved.it/iachievedit/managing-multiple-schemes-and-build-configurations/" target="_blank" rel="noopener">这篇</a>文章</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ios/" rel="tag"># ios</a>
+          
+            <a href="/tags/swift/" rel="tag"># swift</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/05/07/Objective-C Runtime的Associated Objects在swift中的使用/" rel="next" title="Objective-C Runtime的Associated Objects在swift中的使用">
+                <i class="fa fa-chevron-left"></i> Objective-C Runtime的Associated Objects在swift中的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/17/swift中-、-、weak与unowned的实际使用心得/" rel="prev" title="swift中?、!、weak与unowned的实际使用心得">
+                swift中?、!、weak与unowned的实际使用心得 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/author.jpg"
+                alt="Cooper" />
+            
+              <p class="site-author-name" itemprop="name">Cooper</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ckp1992.github.io/" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ckp1992" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kivixv.com/" title="kivi’s Blog" target="_blank">kivi’s Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://boolron.github.io/" title="Ron’s Blog" target="_blank">Ron’s Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#建立新Scheme"><span class="nav-number">1.</span> <span class="nav-text">建立新Scheme</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件编译的代码"><span class="nav-number">2.</span> <span class="nav-text">条件编译的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">3.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章"><span class="nav-number">4.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cooper</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
