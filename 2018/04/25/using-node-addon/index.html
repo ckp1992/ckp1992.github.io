@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="nodejs," />
+
+
+
+
+
+  <link rel="alternate" href="http://ckp1992.github.io/" title="Cooper‘s Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="重新买了个笔记本，博客荒废了快2年，又可以在家写了。  最近使用NodeJS的C++插件写了一个简单NodeJS Http服务器，将学习和编写过程记录一下。本文只有思路步骤代码，并不提供完整demo">
+<meta name="keywords" content="nodejs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NodeJS C++ 插件使用心得">
+<meta property="og:url" content="http://yoursite.com/2018/04/25/using-node-addon/index.html">
+<meta property="og:site_name" content="Cooper‘s Blog">
+<meta property="og:description" content="重新买了个笔记本，博客荒废了快2年，又可以在家写了。  最近使用NodeJS的C++插件写了一个简单NodeJS Http服务器，将学习和编写过程记录一下。本文只有思路步骤代码，并不提供完整demo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xii9w.com1.z0.glb.clouddn.com/WX20180425-162905.png">
+<meta property="og:image" content="http://7xii9w.com1.z0.glb.clouddn.com/WX20180425-163251.png">
+<meta property="og:updated_time" content="2018-04-25T13:39:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NodeJS C++ 插件使用心得">
+<meta name="twitter:description" content="重新买了个笔记本，博客荒废了快2年，又可以在家写了。  最近使用NodeJS的C++插件写了一个简单NodeJS Http服务器，将学习和编写过程记录一下。本文只有思路步骤代码，并不提供完整demo">
+<meta name="twitter:image" content="http://7xii9w.com1.z0.glb.clouddn.com/WX20180425-162905.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/25/using-node-addon/"/>
+
+
+
+
+
+  <title>NodeJS C++ 插件使用心得 | Cooper‘s Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?64c1deb957f14608b306ce2ad57c359c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cooper‘s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一名码畜</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/25/using-node-addon/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/author.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cooper‘s Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NodeJS C++ 插件使用心得</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-25T21:23:10+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">nodejs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/25/using-node-addon/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/04/25/using-node-addon/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>重新买了个笔记本，博客荒废了快2年，又可以在家写了。</p>
+</blockquote>
+<p>最近使用NodeJS的C++插件写了一个简单NodeJS Http服务器，将学习和编写过程记录一下。本文只有思路步骤代码，并不提供完整demo<br><a id="more"></a></p>
+<blockquote>
+<ul>
+<li>需求：服务器端生产音视频裸流 =&gt; 封装flv流 =&gt; 推送流</li>
+<li>思路：1.对于不熟后台的人，NodeJS可以快速搭建服务器；2.部分现有代码是由C、C++实现的，代码需要多线程运行，所以用C++插件来封装给JS调用。</li>
+</ul>
+</blockquote>
+<h4 id="1、开发环境配置"><a href="#1、开发环境配置" class="headerlink" title="1、开发环境配置:"></a>1、开发环境配置:</h4><ul>
+<li><p>安装node-gyp：<code>npm install -g node-gyp</code></p>
+</li>
+<li><p>在工程目录下编写 binding.gyp 文件：</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"targets"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"target_name"</span>: <span class="string">"addon"</span>,</span><br><span class="line">      <span class="string">"sources"</span>: [<span class="string">"addon.cc"</span>, <span class="string">"myexample.cc"</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>使用npm init生成package.json文件</p>
+</li>
+<li><p>package.json 里面添加：”gypfile”: true</p>
+</li>
+<li><p>添加bindings（用于解决C++插件位置的定位问题）组件依赖：<code>npm install bindings —save</code></p>
+</li>
+<li><p>生成插件xxx.node: <code>node-gyp configure</code> 然后<code>node-gyp build</code>（后面c++文件修改后，使用<code>node-gyp rebuild</code>来合并使用者2个命令）</p>
+</li>
+<li><p>生成xcode debug工程来进行代码调试: <code>node-gyp configure -- -f xcode</code></p>
+<ul>
+<li><p>打开xcode工程：Product -&gt; Scheme -&gt; Edit Scheme，Info -&gt; Executable -&gt; Other，选择node所在位置，例如我的在：/Users/cooperchen/.nvm/versions/node/v8.10.0/bin/node<br><img src="http://7xii9w.com1.z0.glb.clouddn.com/WX20180425-162905.png" alt="设置xcode的executable"></p>
+</li>
+<li><p>Arguments选项中Atruments Passed On Launch中点击加号，将调试入口的JS文件拖进去。<br><img src="http://7xii9w.com1.z0.glb.clouddn.com/WX20180425-163251.png" alt="设置xcode的Arguments"></p>
+</li>
+<li><p>这样就可以在xcode中用node来运行app.js了。使用xcode调试的好处是，调整完插件代码，可以直接运行，不需要每次都输入<code>node-gyp rebuild</code>命令，然后再用node启动服务器</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>一些小技巧：</p>
+<ul>
+<li><p>在<code>npm install</code>的时候可以同时build插件，编辑<code>package.json</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"install"</span>: <span class="string">"node-gyp rebuild"</span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在添加新的C、C++源文件后，不需要手动添加到<code>binding.gyp</code>的懒人方法，编辑<code>binding.gyp</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//假设现在所有c、c++源文件都在 binding.gyp 文件所在目录的./source文件夹里面</span><br><span class="line">&quot;sources&quot;: [</span><br><span class="line">      &quot;&lt;!@(node -p \&quot;require(&apos;fs&apos;).readdirSync(&apos;./source&apos;).map(f=&gt;&apos;source/&apos;+f).join(&apos; &apos;)\&quot;)&quot;,</span><br><span class="line">  ],</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2、插件实现："><a href="#2、插件实现：" class="headerlink" title="2、插件实现："></a>2、插件实现：</h4><blockquote>
+<ul>
+<li>代码调用过程：JS调用一个函数注册一个回调，在某些时候这个回调被调用。</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>在练手的时候，用NodeJS插件封装了一下<code>live555</code>这个C++库，用音频数据获取来做示例，播放端在JS层是这么调用的：</li>
+</ul>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//javascript 是这样调用的：</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//调用C++插件</span></span><br><span class="line"><span class="keyword">const</span> live555plugin = <span class="built_in">require</span>(<span class="string">'bindings'</span>)(<span class="string">'nodelive555plugin'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//注册视频数据回调</span></span><br><span class="line">live555plugin.onReceiveVideoFrame(<span class="function"><span class="keyword">function</span>(<span class="params">buffer</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'onReceiveVideoFrame'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(buffer.length);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//注册音频数据回调</span></span><br><span class="line">live555plugin.onReceiveAudioFrame(<span class="function"><span class="keyword">function</span>(<span class="params">buffer</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'onReceiveAudioFrame'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(buffer.length);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//向服务端请求播放, 当收到音频或者视频数据的时候出发上面2个回调函数</span></span><br><span class="line">live555plugin.play();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>注册插件（C、C++实现）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Init</span><span class="params">(v8::Local&lt;v8::Object&gt; exports, v8::Local&lt;v8::Object&gt; <span class="keyword">module</span>)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//注册js层可以调用的函数，过程类似 module.exports = play();</span></span><br><span class="line"></span><br><span class="line">    exports-&gt;Set(Nan::New(<span class="string">"play"</span>).ToLocalChecked(),</span><br><span class="line">                 Nan::New&lt;v8::FunctionTemplate&gt;(play)-&gt;GetFunction());</span><br><span class="line">                 </span><br><span class="line"><span class="comment">//将js层调用的"onReceiveAudioFrame"函数和C++的onReceiveAudioFrame函数绑定</span></span><br><span class="line">    exports-&gt;Set(Nan::New(<span class="string">"onReceiveAudioFrame"</span>).ToLocalChecked(),</span><br><span class="line">                 Nan::New&lt;v8::FunctionTemplate&gt;(onReceiveAudioFrame)-&gt;GetFunction());</span><br><span class="line">    exports-&gt;Set(Nan::New(<span class="string">"onReceiveVideoFrame"</span>).ToLocalChecked(),</span><br><span class="line">                 Nan::New&lt;v8::FunctionTemplate&gt;(onReceiveVideoFrame)-&gt;GetFunction());</span><br><span class="line">    exports-&gt;Set(Nan::New(<span class="string">"stop"</span>).ToLocalChecked(),</span><br><span class="line">                 Nan::New&lt;v8::FunctionTemplate&gt;(stop)-&gt;GetFunction());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">NODE_MODULE(nodelive555plugin, Init)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>注册回调</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Nan::Callback* js_audioFrameCallback = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//和js层调用的"onReceiveAudioFrame"绑定的具体C、C++实现函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">onReceiveAudioFrame</span><span class="params">(<span class="keyword">const</span> Nan::FunctionCallbackInfo&lt;v8::Value&gt;&amp; info)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (info.Length() &lt; <span class="number">1</span>) &#123;</span><br><span class="line">        Nan::ThrowTypeError(<span class="string">"Wrong number of arguments"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (!info[<span class="number">0</span>]-&gt;IsFunction()) &#123;</span><br><span class="line">        Nan::ThrowTypeError(<span class="string">"Wrong arguments, need callback founction"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//将回调的对象保存</span></span><br><span class="line">    js_audioFrameCallback = <span class="keyword">new</span> Nan::Callback(info[<span class="number">0</span>].As&lt;v8::Function&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>触发回调</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//当收到音频数据的时候</span></span><br><span class="line"><span class="comment">//处理数据并回调到JS层</span></span><br><span class="line"></span><br><span class="line">Nan::HandleScope scope;</span><br><span class="line">v8::Isolate* isolate = v8::Isolate::GetCurrent();</span><br><span class="line"></span><br><span class="line">Packet *packet = (Packet*)handle-&gt;data;<span class="comment">//音频数据</span></span><br><span class="line"></span><br><span class="line">v8::MaybeLocal&lt;v8::Object&gt; buffer = node::Buffer::New(isolate, (<span class="keyword">char</span>*)packet-&gt;data, packet-&gt;length, buffer_delete_callback, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//告诉回调function中有1个参数，为Buffer</span></span><br><span class="line">v8::Local&lt;v8::Value&gt; argv[] = &#123;buffer.ToLocalChecked()&#125;;</span><br><span class="line">js_audioFrameCallback-&gt;Call(<span class="number">1</span>, argv, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (packet != <span class="literal">NULL</span>) &#123;</span><br><span class="line">    <span class="built_in">free</span>(packet);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">//后面就触发到JS层的回调函数中</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>libuv的使用</li>
+</ul>
+<blockquote>
+<p>上面实现了：JS层注册回调 =&gt; C++处理数据并从回调函数中传递数据到JS层 =&gt; JS层从回调函数中收到数据<br>但是上面都是在主线程中实现的，如果想要在子线程中处理完数据，在主线程中回调到JS中，就需要使用libuv</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//1、定义</span></span><br><span class="line"><span class="keyword">uv_loop_t</span>* loop = <span class="literal">NULL</span>;</span><br><span class="line"><span class="keyword">uv_async_t</span> audio_frame_async;<span class="comment">//定义一个消息</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//2、初始化</span></span><br><span class="line">loop =  uv_default_loop();<span class="comment">//这个default_loop是主线程的loop，在nodejs的运行线程中</span></span><br><span class="line">uv_async_init(loop, &amp;audio_frame_async, uv_audio_frame_msg);</span><br><span class="line"></span><br><span class="line"><span class="comment">//3、当子线程中完成数据处理之后，带上数据并将消息发送到loop中，</span></span><br><span class="line">audio_frame_async.data = packet;</span><br><span class="line">uv_async_send(&amp;audio_frame_async);</span><br><span class="line"></span><br><span class="line"><span class="comment">//4、audio_frame_async消息的回调</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">uv_audio_frame_msg</span><span class="params">(<span class="keyword">uv_async_t</span>* handle)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//当loop收到 audio_frame_async 的消息的时候，会触发这个函数</span></span><br><span class="line">    <span class="comment">//因为注册在default_loop上面，default_loop在主线程中，所以这里就是主线程，最终可以在这里触发上面说js_audioFrameCallback回调到JS层</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>到目前为止，上述思路基本可以满足一个简单完整插件的需求：子线程处理数据，然后主线程回调到JS层</p>
+</blockquote>
+<h4 id="3、一些理解"><a href="#3、一些理解" class="headerlink" title="3、一些理解"></a>3、一些理解</h4><ul>
+<li>插件开发主要是<code>V8引擎</code>和<code>libuv</code>配合使用</li>
+<li>v8引擎由于版本变动api兼容性差，基本推荐使用<code>NAN</code>方案来解决兼容性问题</li>
+<li>v8 api的调用（或者说NAN api的调用 ）基本上可以说是模板式的调用，如果不需要去看NodeJS的源码的话，使用的时候基本是复制粘贴的模式，只需要了解它基本的类结构，主要精力放在写自己的C、C++逻辑就好。</li>
+<li>libuv提供了消息机制，线程、网络、文件等api。</li>
+<li>对于libuv，它解决了如windows，linux等不同平台的api兼容性问题。如果你的同事用windows机器，你用mac机器来开发同一个插件的时候，在开发的时候尽量使用它提供的api，如线程、网络等。</li>
+</ul>
+<h4 id="4、资料与学习"><a href="#4、资料与学习" class="headerlink" title="4、资料与学习"></a>4、资料与学习</h4><blockquote>
+<p>整理了一下资料的学习顺序，所有资料都是必看。</p>
+</blockquote>
+<ul>
+<li><p><a href="http://nodejs.cn/api/addons.html" target="_blank" rel="noopener">官网中文教程</a></p>
+</li>
+<li><p><a href="https://gyp.gsrc.io/docs/LanguageSpecification.md" target="_blank" rel="noopener">gyp文件配置字段</a> （按需查找使用）</p>
+</li>
+<li><p><a href="https://gyp.gsrc.io/docs/UserDocumentation.md#Introduction" target="_blank" rel="noopener">gyp用户手册</a> （按需查找使用）</p>
+</li>
+<li><p><a href="http://gitbook.cn/books/5938f4ae8b55d47644b7a445/index.html" target="_blank" rel="noopener">NodeJS C++插件开发方式演进</a> (理解为什么使用Nan来写插件)</p>
+</li>
+<li><p><a href="http://deadhorse.me/nodejs/2012/10/09/c_addon_in_nodejs_object.html" target="_blank" rel="noopener">v8引擎类的基本结构</a></p>
+</li>
+<li><p><a href="https://github.com/nodejs/node-addon-examples" target="_blank" rel="noopener">C++插件demo，含V8原生使用方式和NAN使用方式</a> （可以抄代码的地方）</p>
+</li>
+</ul>
+<ul>
+<li><p><a href="http://luohaha.github.io/Chinese-uvbook/index.html" target="_blank" rel="noopener">libuv中文教程</a></p>
+</li>
+<li><p><a href="http://nikhilm.github.io/uvbook/" target="_blank" rel="noopener">libuv英文教程</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/27/这个2016/" rel="next" title="这个2016">
+                <i class="fa fa-chevron-left"></i> 这个2016
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/author.jpg"
+                alt="Cooper" />
+            
+              <p class="site-author-name" itemprop="name">Cooper</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ckp1992.github.io/" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ckp1992" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kivixv.com/" title="kivi’s Blog" target="_blank">kivi’s Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://boolron.github.io/" title="Ron’s Blog" target="_blank">Ron’s Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、开发环境配置"><span class="nav-number">1.</span> <span class="nav-text">1、开发环境配置:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、插件实现："><span class="nav-number">2.</span> <span class="nav-text">2、插件实现：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、一些理解"><span class="nav-number">3.</span> <span class="nav-text">3、一些理解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、资料与学习"><span class="nav-number">4.</span> <span class="nav-text">4、资料与学习</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2014 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cooper</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'ckp1992',
+            repo: 'ckp1992.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd556a2bb09f4d14fbd319dc5405013171ac9bba2',
+            
+                client_id: '870420f9d1487f99c059'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
