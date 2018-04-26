@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="心情," />
+  <meta name="keywords" content="音视频," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="写在前面一下子就到了16年底了，已经好久没有写过这种总结性的心情文章了，记忆中最后一篇这种东西还是高考结束之前在qq空间里面写的一篇成人礼来着。感觉已经离开那种什么都爱写一些小文章来记录的年代已经很远了。去年大学毕业之后到现在已经一年半了，今年是工作之后完整经历的第一年，也经历了不少事情，挺值得记录的。 14年底开始接触iOS开发到现在也要进入第三个年头。最开始抱着找一份安卓的心态去找实习，误打误">
-<meta name="keywords" content="心情">
+<meta name="description" content="科普：视频的I、B、P帧和PTS、DTS的关系详细科普：雷霄骅博客     需求：读取h264视频裸流文件、读取aac音频裸流文件，并发送出去 现象：播放器拿到数据播放的时候。ffplay和VLC兼容性好的播放器播放画面正常，容错性稍微差一点的如小程序的live-player标签，就会出现画面回跳 原因：视频中有B帧，裸流文件中不带pts，需要自己手工生成   1、视频的PTS、DTS 没有B帧">
+<meta name="keywords" content="音视频">
 <meta property="og:type" content="article">
-<meta property="og:title" content="这个2016">
-<meta property="og:url" content="http://yoursite.com/2016/12/27/这个2016/index.html">
+<meta property="og:title" content="音视频帧DTS、PTS的简单生成">
+<meta property="og:url" content="http://yoursite.com/2018/04/26/generate-video-audio-pts-dts/index.html">
 <meta property="og:site_name" content="Cooper‘s Blog">
-<meta property="og:description" content="写在前面一下子就到了16年底了，已经好久没有写过这种总结性的心情文章了，记忆中最后一篇这种东西还是高考结束之前在qq空间里面写的一篇成人礼来着。感觉已经离开那种什么都爱写一些小文章来记录的年代已经很远了。去年大学毕业之后到现在已经一年半了，今年是工作之后完整经历的第一年，也经历了不少事情，挺值得记录的。 14年底开始接触iOS开发到现在也要进入第三个年头。最开始抱着找一份安卓的心态去找实习，误打误">
+<meta property="og:description" content="科普：视频的I、B、P帧和PTS、DTS的关系详细科普：雷霄骅博客     需求：读取h264视频裸流文件、读取aac音频裸流文件，并发送出去 现象：播放器拿到数据播放的时候。ffplay和VLC兼容性好的播放器播放画面正常，容错性稍微差一点的如小程序的live-player标签，就会出现画面回跳 原因：视频中有B帧，裸流文件中不带pts，需要自己手工生成   1、视频的PTS、DTS 没有B帧">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-31T09:14:37.000Z">
+<meta property="og:updated_time" content="2018-04-26T14:34:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="这个2016">
-<meta name="twitter:description" content="写在前面一下子就到了16年底了，已经好久没有写过这种总结性的心情文章了，记忆中最后一篇这种东西还是高考结束之前在qq空间里面写的一篇成人礼来着。感觉已经离开那种什么都爱写一些小文章来记录的年代已经很远了。去年大学毕业之后到现在已经一年半了，今年是工作之后完整经历的第一年，也经历了不少事情，挺值得记录的。 14年底开始接触iOS开发到现在也要进入第三个年头。最开始抱着找一份安卓的心态去找实习，误打误">
+<meta name="twitter:title" content="音视频帧DTS、PTS的简单生成">
+<meta name="twitter:description" content="科普：视频的I、B、P帧和PTS、DTS的关系详细科普：雷霄骅博客     需求：读取h264视频裸流文件、读取aac音频裸流文件，并发送出去 现象：播放器拿到数据播放的时候。ffplay和VLC兼容性好的播放器播放画面正常，容错性稍微差一点的如小程序的live-player标签，就会出现画面回跳 原因：视频中有B帧，裸流文件中不带pts，需要自己手工生成   1、视频的PTS、DTS 没有B帧">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/12/27/这个2016/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/26/generate-video-audio-pts-dts/"/>
 
 
 
 
 
-  <title>这个2016 | Cooper‘s Blog</title>
+  <title>音视频帧DTS、PTS的简单生成 | Cooper‘s Blog</title>
   
 
 
@@ -265,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/27/这个2016/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/26/generate-video-audio-pts-dts/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Cooper">
@@ -282,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">这个2016</h1>
+          <h1 class="post-title" itemprop="name headline">音视频帧DTS、PTS的简单生成</h1>
         
 
         <div class="post-meta">
@@ -294,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-27T20:32:00+08:00">
-                2016-12-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-26T22:32:54+08:00">
+                2018-04-26
               </time>
             
 
@@ -317,8 +317,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/心情/" itemprop="url" rel="index">
-                    <span itemprop="name">心情</span>
+                  <a href="/categories/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
                   </a>
                 </span>
 
@@ -335,8 +335,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2016/12/27/这个2016/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2016/12/27/这个2016/" itemprop="commentsCount"></span>
+                <a href="/2018/04/26/generate-video-audio-pts-dts/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/04/26/generate-video-audio-pts-dts/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -364,23 +364,32 @@
       
 
       
-        <h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><p>一下子就到了16年底了，已经好久没有写过这种总结性的心情文章了，记忆中最后一篇这种东西还是高考结束之前在qq空间里面写的一篇成人礼来着。感觉已经离开那种什么都爱写一些小文章来记录的年代已经很远了。去年大学毕业之后到现在已经一年半了，今年是工作之后完整经历的第一年，也经历了不少事情，挺值得记录的。</p>
-<p>14年底开始接触iOS开发到现在也要进入第三个年头。最开始抱着找一份安卓的心态去找实习，误打误撞接触到了iOS开发这项技能，也陪伴到了现在。由北京到广州再到深圳，外包到创业公司再到规模大的公司，将要完全都经历一遍。</p>
-<h3 id="工作上"><a href="#工作上" class="headerlink" title="工作上"></a>工作上</h3><ul>
-<li>创业公司</li>
-</ul>
-<p>创业公司与外包公司在工作上其实性质都是类似的，不同的是创业公司会接触到更多对于产品上面的理解，虽然都是写代码，但是或多或少都会参与到产品中去，这个是在外包公司工作的时候所欠缺的。</p>
-<p>从去年年底开始，项目几乎是从零到开始写，见证了它从无到有，然后几乎要死去的时候趁着直播这个风口看到了希望重新以为可以走起来，到最后还是慢慢衰落。个人认为整个项目衰落的一个点就是伤害了用户，在根基没站稳的时候，做出了过格的事情。虽然项目没壮大，但是自己在前大半年里面做直播这个功能的时候，技术得到了很多的提升，用户体验、性能调优、学习方法，这是在之前一整年多里面没有学到的。</p>
+        <blockquote>
+<p>科普：<a href="http://www.cnblogs.com/qingquan/archive/2011/07/27/2118967.html" target="_blank" rel="noopener">视频的I、B、P帧和PTS、DTS的关系</a><br>详细科普：<a href="https://blog.csdn.net/leixiaohua1020/article/details/18893769" target="_blank" rel="noopener">雷霄骅博客</a></p>
+</blockquote>
+<hr>
+<blockquote>
 <ul>
-<li>大公司</li>
+<li>需求：读取h264视频裸流文件、读取aac音频裸流文件，并发送出去</li>
+<li>现象：播放器拿到数据播放的时候。ffplay和VLC兼容性好的播放器播放画面正常，容错性稍微差一点的如小程序的<code>live-player</code>标签，就会出现画面回跳</li>
+<li>原因：视频中有B帧，裸流文件中不带pts，需要自己手工生成</li>
 </ul>
-<p>刚到大公司2个月，在业务上，暂时感觉做起来是差不多。以前都做事都是有现成稳定的技术，追求稳定快速开发，直接拿来就用，现在也形成了这种习惯。而现在这里提倡是要更深入去了解某项技术的实现细节，了解优劣性，最好能模仿写一个出来，更可控制，和自己最初什么都想要自己写的心态很像，慢慢切换回来，提高可能更快吧。大公司有更好更专业的福利制度，薪酬制度，职级通道，技术培养，到目前为止的，自己觉得是最好的体验。</p>
-<p>更多大公司体验明年再写，2个月体验不出什么东西。</p>
-<h3 id="人或事"><a href="#人或事" class="headerlink" title="人或事"></a>人或事</h3><p>这一年遇到过奇葩的人，更多的是遇到对自己有帮助的人。</p>
-<p>高中毕业之从来都觉得自己太幸运了，一直以来感觉工作技术提升上几乎处于单打独斗的状态，很感激无论在外包，创业公司，大公司，都能遇得到体谅、包容我这个菜鸡、教我怎么去处理事情、听我想法的同事前辈。比以前看书看多了，技能相关英语提高了，也能慢慢单独处理一些复杂点的问题了，能解决一些自己以为解决不了的问题了。</p>
-<p>怪事，恶心事，伤心事，发生的时候，人的确会很愤怒，很难过。不过在经历过之后，在遇不到更严重的事情的时候，人基本也不会生气了，也就那样，尽量保持平静。</p>
-<p>一年多以来最受用的一句话：<code>做人要有担当</code></p>
-<h3 id="明年"><a href="#明年" class="headerlink" title="明年"></a>明年</h3><p>希望可以在技术方面深入去，技术能力更加提升。大学的时候喜欢弹吉他，前三年经常玩，每一个学期都能明显感觉到自己比上学期有不同的地方，希望在技术方面也能给自己这种体会吧。</p>
+</blockquote>
+<h4 id="1、视频的PTS、DTS"><a href="#1、视频的PTS、DTS" class="headerlink" title="1、视频的PTS、DTS"></a>1、视频的PTS、DTS</h4><ul>
+<li>没有B帧的时候PTS = DTS</li>
+<li>有B帧的时候：<ul>
+<li>1、B帧PTS = B帧的DTS</li>
+<li>2、I帧或者P帧PTS = DTS + 依赖此帧解码并在此帧前显示的B帧的数量 + 1</li>
+<li>3、需要保证每一帧的 PTS &gt;= DTS</li>
+</ul>
+</li>
+<li>思路<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1、假设P帧之间的B帧数量为3个</span><br><span class="line"></span><br><span class="line">2、</span><br><span class="line">编码顺序：</span><br><span class="line">I P1 B1 B2 B3 P2 ... ...</span><br><span class="line">播放顺序：</span><br><span class="line">I B1 B2 B3 P1 ...P2 ...</span><br><span class="line"></span><br><span class="line">3、</span><br><span class="line">实现的时候可以理解为将B帧用一个队列bframeQueue存起来，遇到下一个P帧或者I帧的时候，将bframeQueue全部出队列，并计算bframeQueue中B帧的PTS和前一个P或I帧的PTS</span><br><span class="line"></span><br><span class="line">PTS与DTS</span><br><span class="line">I P1 B1 B2 B3 P2 B4 B5 B6 P3//编码顺序</span><br><span class="line">0  1  2  3  4  5  6  7  8  9//DTS</span><br><span class="line">0  5  2  3  4  9  6  7  8 13 //PTS = DTS + bframeQueue.size() + 1</span><br><span class="line">//这里可以看到，当不加后面1的时候，P帧会和一个B帧PTS重复了</span><br><span class="line"></span><br><span class="line">4、</span><br><span class="line">假如视频fps为30，一帧占用30分之1秒，就是1/fps秒</span><br><span class="line">那么每编码出一帧的时候，DTS就是 n * 1/fps秒</span><br><span class="line">根据上面的思路，PTS就可以根据DTS算出来了</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="2、音频的PTS、DTS"><a href="#2、音频的PTS、DTS" class="headerlink" title="2、音频的PTS、DTS"></a>2、音频的PTS、DTS</h3><p>音频PTS = DTS，比较简单。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">F0 F1 F2 F3 ... //编码顺序</span><br><span class="line"> 0  1  2  3 ... //DTS</span><br><span class="line"> 0  1  2  3 ... //PTS</span><br><span class="line"> </span><br><span class="line">假如音频的采样率为 44100 Hz ,即1秒对声音采样44100次</span><br><span class="line">AAC一帧数据固定包含1024个采样，那就是一帧数据占用 1024/44100 秒，即 1024/sampling_frequency 秒</span><br><span class="line">那么每编码出一帧的时候，DTS就是 n * 1024/sampling_frequency 秒</span><br></pre></td></tr></table></figure>
+<p><a href="https://wiki.multimedia.cx/index.php/Understanding_AAC" target="_blank" rel="noopener">AAC格式大概了解一下</a></p>
+<h3 id="3、其他"><a href="#3、其他" class="headerlink" title="3、其他"></a>3、其他</h3><p>了解了一下，在直播当中，很大一部分为了保证低延时、实现简单，都不会在视频流里面传送B帧。</p>
 
       
     </div>
@@ -398,7 +407,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/心情/" rel="tag"># 心情</a>
+            <a href="/tags/音视频/" rel="tag"># 音视频</a>
           
         </div>
       
@@ -411,8 +420,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/06/01/CoreAnimation总结/" rel="next" title="CoreAnimation总结">
-                <i class="fa fa-chevron-left"></i> CoreAnimation总结
+              <a href="/2018/04/25/using-node-addon/" rel="next" title="NodeJS C++ 插件使用心得">
+                <i class="fa fa-chevron-left"></i> NodeJS C++ 插件使用心得
               </a>
             
           </div>
@@ -421,8 +430,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/25/using-node-addon/" rel="prev" title="NodeJS C++ 插件使用心得">
-                NodeJS C++ 插件使用心得 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/26/flv-summary/" rel="prev" title="flv格式小结">
+                flv格式小结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -601,7 +610,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作上"><span class="nav-number">2.</span> <span class="nav-text">工作上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#人或事"><span class="nav-number">3.</span> <span class="nav-text">人或事</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#明年"><span class="nav-number">4.</span> <span class="nav-text">明年</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、视频的PTS、DTS"><span class="nav-number">1.</span> <span class="nav-text">1、视频的PTS、DTS</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、音频的PTS、DTS"><span class="nav-number"></span> <span class="nav-text">2、音频的PTS、DTS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、其他"><span class="nav-number"></span> <span class="nav-text">3、其他</span></a></div>
             
 
           </div>

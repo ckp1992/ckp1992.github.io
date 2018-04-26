@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="音视频," />
 
 
 
@@ -81,13 +81,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Cooper‘s Blog">
-<meta property="og:url" content="http://yoursite.com/categories/ios/index.html">
+<meta name="description" content="最近把flv格式的封装手撸了一遍，做一下总结。 1、总体结构 FlvHeader（固定9字节，可以标识是否有音视频） PreviousTagSize (4字节，第一个PreviousTagSize总为0) ScriptTag (onMetaData, 描述视频长宽、音视频解码器等参数) PreviousTagSize (4字节, ScriptTag具体大小) AVCSequence (描述视频信息">
+<meta name="keywords" content="音视频">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flv格式小结">
+<meta property="og:url" content="http://yoursite.com/2018/04/26/flv-summary/index.html">
 <meta property="og:site_name" content="Cooper‘s Blog">
+<meta property="og:description" content="最近把flv格式的封装手撸了一遍，做一下总结。 1、总体结构 FlvHeader（固定9字节，可以标识是否有音视频） PreviousTagSize (4字节，第一个PreviousTagSize总为0) ScriptTag (onMetaData, 描述视频长宽、音视频解码器等参数) PreviousTagSize (4字节, ScriptTag具体大小) AVCSequence (描述视频信息">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-26T14:42:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cooper‘s Blog">
+<meta name="twitter:title" content="flv格式小结">
+<meta name="twitter:description" content="最近把flv格式的封装手撸了一遍，做一下总结。 1、总体结构 FlvHeader（固定9字节，可以标识是否有音视频） PreviousTagSize (4字节，第一个PreviousTagSize总为0) ScriptTag (onMetaData, 描述视频长宽、音视频解码器等参数) PreviousTagSize (4字节, ScriptTag具体大小) AVCSequence (描述视频信息">
 
 
 
@@ -117,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/ios/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/26/flv-summary/"/>
 
 
 
 
 
-  <title>分类: ios | Cooper‘s Blog</title>
+  <title>flv格式小结 | Cooper‘s Blog</title>
   
 
 
@@ -152,7 +157,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -246,171 +251,216 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block category">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>ios<small>分类</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/26/flv-summary/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/author.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cooper‘s Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2016/06/01/CoreAnimation总结/" itemprop="url">
-              
-                <span itemprop="name">CoreAnimation总结</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">flv格式小结</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-06-01T23:30:08+08:00"
-              content="2016-06-01" >
-          06-01
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-26T22:38:45+08:00">
+                2018-04-26
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/音视频/" itemprop="url" rel="index">
+                    <span itemprop="name">音视频</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/26/flv-summary/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/04/26/flv-summary/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2016/03/12/最近实现一个需求从复杂到简单的过程/" itemprop="url">
-              
-                <span itemprop="name">最近实现一个需求从复杂到简单的过程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-03-12T23:02:32+08:00"
-              content="2016-03-12" >
-          03-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2016/03/03/CoreAnimation实现简单直播点赞飘心效果/" itemprop="url">
-              
-                <span itemprop="name">CoreAnimation实现简单直播点赞飘心效果</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-03-03T22:26:10+08:00"
-              content="2016-03-03" >
-          03-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2015/12/23/苹果证书实际应用的一些理解/" itemprop="url">
-              
-                <span itemprop="name">苹果证书实际应用的一些理解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-12-23T11:27:37+08:00"
-              content="2015-12-23" >
-          12-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2015/08/17/swift中-、-、weak与unowned的实际使用心得/" itemprop="url">
-              
-                <span itemprop="name">swift中?、!、weak与unowned的实际使用心得</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-08-17T01:04:34+08:00"
-              content="2015-08-17" >
-          08-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+        <p>最近把flv格式的封装手撸了一遍，做一下总结。</p>
+<h4 id="1、总体结构"><a href="#1、总体结构" class="headerlink" title="1、总体结构"></a>1、总体结构</h4><ul>
+<li><code>FlvHeader</code>（固定9字节，可以标识是否有音视频）</li>
+<li>PreviousTagSize (4字节，第一个PreviousTagSize总为0)</li>
+<li><code>ScriptTag</code> (onMetaData, 描述视频长宽、音视频解码器等参数)</li>
+<li>PreviousTagSize (4字节, ScriptTag具体大小)</li>
+<li><code>AVCSequence</code> (描述视频信息，存放sps,pps数据)</li>
+<li>PreviousTagSize（4字节，AVCSequence具体大小）</li>
+<li><code>AACSequence</code> (描述音频信息，采样率，声道数等)</li>
+<li>PreviousTagSize（4字节，AACSequence具体大小）</li>
+<li><code>VideoTag</code> (视频数据Tag)</li>
+<li>PreviousTagSize（4字节，VideoTag具体大小）</li>
+<li><code>AudioTag</code> (音频数据Tag)</li>
+<li>PreviousTagSize（4字节，AudioTag具体大小）</li>
+<li>…后面重复音视频Tag</li>
+</ul>
+<h4 id="2、FlvTag"><a href="#2、FlvTag" class="headerlink" title="2、FlvTag"></a>2、FlvTag</h4><p>类型包括ScriptTag、VideoTag、AudioTag、其中AVCSequence是VideoTag的一种<br>，AACSequence是AudioTag的一种。结构如下：</p>
+<ul>
+<li>FlvTag<ul>
+<li>FlvTagHeader （时间戳，Tag类型等）</li>
+<li>FlvTagData （具体数据，如视频的h264的裸流，音频aac裸流�h2）</li>
+</ul>
+</li>
+</ul>
+<p>没错，基本结构就是这样。具体详细细节请参考<a href="https://wwwimages2.adobe.com/content/dam/acom/en/devnet/flv/video_file_format_spec_v10.pdf" target="_blank" rel="noopener">官方文档</a></p>
+<h4 id="3、一些注意点"><a href="#3、一些注意点" class="headerlink" title="3、一些注意点"></a>3、一些注意点</h4><ul>
+<li>FlvTagHeader中时间戳一共4个字节，前3个字节存放时间戳的低24bit，最后一个字节存放时间戳的高8bit。没错，就是这么坑爹。</li>
+<li>VideoTag的中的CompositionTime字段，填写<code>CompositionTime = PTS - DTS</code>数值</li>
+<li>flv里面的时间单位都是毫秒，以大端形式存放数据</li>
+<li>填充VideoTagData的时候不要带上<code>nalu</code>的<code>start code</code>,AudioTagData不要带上ADTS头</li>
+</ul>
+<h4 id="4、参考资料"><a href="#4、参考资料" class="headerlink" title="4、参考资料"></a>4、参考资料</h4><blockquote>
+<p>如果需要自己手撸一份代码，下面资料可以参考</p>
+</blockquote>
+<ul>
+<li><a href="https://www.jianshu.com/p/f2b31ddcf200" target="_blank" rel="noopener">flv的ScriptTag: onMetadata</a></li>
+<li><a href="http://blog.51cto.com/billhoo/1557646" target="_blank" rel="noopener">aac与h264封装成flv参考资料(文中的做法没有包含FlvTagHeader)</a></li>
+</ul>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/音视频/" rel="tag"># 音视频</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/26/generate-video-audio-pts-dts/" rel="next" title="音视频帧DTS、PTS的简单生成">
+                <i class="fa fa-chevron-left"></i> 音视频帧DTS、PTS的简单生成
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/categories/ios/page/2/">2</a><a class="extend next" rel="next" href="/categories/ios/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -418,6 +468,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
 
         </div>
         
@@ -438,8 +499,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -538,6 +608,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、总体结构"><span class="nav-number">1.</span> <span class="nav-text">1、总体结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、FlvTag"><span class="nav-number">2.</span> <span class="nav-text">2、FlvTag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、一些注意点"><span class="nav-number">3.</span> <span class="nav-text">3、一些注意点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、参考资料"><span class="nav-number">4.</span> <span class="nav-text">4、参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -678,6 +764,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -724,6 +814,30 @@
 
     
 
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'ckp1992',
+            repo: 'ckp1992.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd556a2bb09f4d14fbd319dc5405013171ac9bba2',
+            
+                client_id: '870420f9d1487f99c059'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
     
 
 
